@@ -1,0 +1,184 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body,
+html,
+input,
+button {
+	font-family: 'Roboto', sans-serif;
+}
+
+.background {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	background-image: url(../images/bgr_bacsi.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+.background .container {
+	position: absolute;
+	z-index: 20;
+	top: 50%;
+	left: 50%;
+	width: 30%;
+	height: 35%;
+	transform: translateX(-50%) translateY(-50%);
+	border-radius: 10px;
+	background-color: rgba(255, 255, 255, .2);
+	box-shadow: rgba(0, 0, 0, .35) 0 5px 15px;
+}
+
+.background .container .title {
+	font-size: 30px;
+	text-align: center;
+	color: white;
+}
+
+.background .container .nameandpass {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 50%;
+	margin-top: 15px;
+	justify-content: center;
+	align-items: center;
+}
+
+.background .container .nameandpass .username {
+	display: flex;
+	width: 100%;
+	height: 45%;
+	justify-content: center;
+}
+
+.background .container .nameandpass .username input {
+	width: 80%;
+	height: 80%;
+	margin-bottom: 15px;
+	padding-left: 15px;
+	color: white;
+	border: none;
+	border-left: 1px solid #19d7f8;
+	outline: none;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.background .container .nameandpass .username input::-moz-placeholder {
+	color: white;
+}
+
+.background .container .nameandpass .username input:-ms-input-placeholder {
+	color: white;
+}
+
+.background .container .nameandpass .username input::placeholder {
+	color: white;
+}
+
+.background .container .nameandpass .username i {
+	display: flex;
+	width: 10%;
+	height: 80%;
+	color: white;
+	background-color: #19d7f8;
+	align-items: center;
+	justify-content: center;
+}
+
+.background .container .nameandpass .password {
+	display: flex;
+	width: 100%;
+	height: 45%;
+	justify-content: center;
+}
+
+.background .container .nameandpass .password input {
+	width: 80%;
+	height: 80%;
+	margin-bottom: 15px;
+	padding-left: 15px;
+	color: white;
+	border: none;
+	border-left: 1px solid #19d7f8;
+	outline: none;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.background .container .nameandpass .password input::-moz-placeholder {
+	color: white;
+}
+
+.background .container .nameandpass .password input:-ms-input-placeholder {
+	color: white;
+}
+
+.background .container .nameandpass .password input::placeholder {
+	color: white;
+}
+
+.background .container .nameandpass .password i {
+	display: flex;
+	width: 10%;
+	height: 80%;
+	color: white;
+	background-color: #19d7f8;
+	align-items: center;
+	justify-content: center;
+}
+
+.background .container .btn {
+	display: flex;
+	width: 100%;
+	height: 15%;
+	align-items: center;
+	justify-content: center;
+}
+
+.background .container .btn .dangki {
+	font-weight: bold;
+	width: 40%;
+	height: 100%;
+	margin-right: 10px;
+	cursor: pointer;
+	color: white;
+	border: 1px solid white;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.background .container .btn .dangki:hover {
+	color: black;
+	border: 1px solid black;
+	background-color: white;
+}
+
+.background .container .btn .dangnhap {
+	font-weight: bold;
+	width: 40%;
+	height: 100%;
+	cursor: pointer;
+	color: white;
+	border: 1px solid white;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.background .container .btn .dangnhap:hover {
+	color: black;
+	border: 1px solid black;
+	background-color: white;
+}
+
+.blur {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .7);
+}
+
