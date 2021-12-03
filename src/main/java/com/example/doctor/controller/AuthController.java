@@ -1,11 +1,12 @@
-package com.example.spring_boot_jwt_lvht.controller;
+package com.example.doctor.controller;
 
-import com.example.spring_boot_jwt_lvht.authen.UserPrincipal;
-import com.example.spring_boot_jwt_lvht.entity.Token;
-import com.example.spring_boot_jwt_lvht.service.TokenService;
-import com.example.spring_boot_jwt_lvht.service.UserService;
-import com.example.spring_boot_jwt_lvht.entity.User;
-import com.example.spring_boot_jwt_lvht.util.JwtUtil;
+
+import com.example.doctor.Util.JwtUtil;
+import com.example.doctor.authen.UserPrincipal;
+import com.example.doctor.entity.Doctor;
+import com.example.doctor.entity.Token;
+import com.example.doctor.service.DoctorService;
+import com.example.doctor.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
     @Autowired
-    private UserService userService;
+    private DoctorService doctorService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -26,18 +27,18 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/register")
-    public User register(@RequestBody User user){
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        return userService.createUser(user);
+    public Doctor register(@RequestBody Doctor doctor){
+        doctor.setPassword(new BCryptPasswordEncoder().encode(doctor.getPassword()));
+        return doctorService.createUser(doctor);
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user){
+    public ResponseEntity<?> login(@RequestBody Doctor doctor){
 
         UserPrincipal userPrincipal =
-                userService.findByUsername(user.getUsername());
+                doctorService.findByUsername(doctor.getUsername());
 
-        if (null == user || !new BCryptPasswordEncoder()
-                .matches(user.getPassword(), userPrincipal.getPassword())) {
+        if (null == doctor || !new BCryptPasswordEncoder()
+                .matches(doctor.getPassword(), userPrincipal.getPassword())) {
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Account or password is not valid!");

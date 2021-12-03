@@ -1,4 +1,4 @@
-package com.example.spring_boot_jwt_lvht.authen;
+package com.example.doctor.authen;
 
 import lombok.Data;
 import lombok.Getter;

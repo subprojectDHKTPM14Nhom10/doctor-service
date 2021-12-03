@@ -1,4 +1,4 @@
-package com.example.spring_boot_jwt_lvht.config;
+package com.example.doctor.config;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
