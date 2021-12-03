@@ -74,11 +74,7 @@
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
-<<<<<<< HEAD
             <version>9.14</version>
-=======
-            <version>8.8</version>
->>>>>>> 84f5c8073fb84489de6ca3b124c3d028a503670d
         </dependency>
     </dependencies>
     <dependencyManagement>
