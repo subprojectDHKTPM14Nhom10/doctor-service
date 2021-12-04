@@ -3,8 +3,10 @@ package com.example.doctor.controller;
 
 import com.example.doctor.Util.JwtUtil;
 import com.example.doctor.authen.UserPrincipal;
+import com.example.doctor.entity.Account;
 import com.example.doctor.entity.Doctor;
 import com.example.doctor.entity.Token;
+import com.example.doctor.service.AccountService;
 import com.example.doctor.service.DoctorService;
 import com.example.doctor.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +23,27 @@ public class AuthController {
     private DoctorService doctorService;
 
     @Autowired
+    private AccountService accountService;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @Autowired
     private TokenService tokenService;
 
     @PostMapping("/register")
-    public Doctor register(@RequestBody Doctor doctor){
-        doctor.setPassword(new BCryptPasswordEncoder().encode(doctor.getPassword()));
-        return doctorService.createUser(doctor);
+    public Account register(@RequestBody Account account){
+        account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
+        return accountService.createAccount(account);
     }
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Doctor doctor){
+    public ResponseEntity<?> login(@RequestBody Account account){
 
         UserPrincipal userPrincipal =
-                doctorService.findByUsername(doctor.getUsername());
+                accountService.findByUsername(account.getUsername());
 
-        if (null == doctor || !new BCryptPasswordEncoder()
-                .matches(doctor.getPassword(), userPrincipal.getPassword())) {
+        if (null == account || !new BCryptPasswordEncoder()
+                .matches(account.getPassword(), userPrincipal.getPassword())) {
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Account or password is not valid!");

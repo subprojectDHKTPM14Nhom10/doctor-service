@@ -19,28 +19,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public UserPrincipal findByUsername(String username) {
-        Doctor doctor = doctorRepository.findByUsername(username);
-        UserPrincipal userPrincipal = new UserPrincipal();
-
-        if (null != doctor) {
-            Set<String> authorities = new HashSet<>();
-            if (null != doctor.getRoles())
-
-                doctor.getRoles().forEach(r -> {
-                    authorities.add(r.getRoleKey());
-                    r.getPermissions().forEach(
-                            p -> authorities.add(p.getPermissionKey()));
-                });
-
-            userPrincipal.setUserId(doctor.getId());
-            userPrincipal.setUsername(doctor.getUsername());
-            userPrincipal.setPassword(doctor.getPassword());
-            userPrincipal.setAuthorities(authorities);
-
-        }
-
-        return userPrincipal;
-
+    public Doctor findByNameDoctor(String username) {
+        return doctorRepository.findByNameDoctor(username);
     }
 }

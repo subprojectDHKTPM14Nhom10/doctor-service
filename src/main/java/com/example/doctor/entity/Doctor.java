@@ -13,15 +13,7 @@ import java.util.Set;
 @Setter
 public class Doctor extends BaseEntity {
 
-    private String username;
-
-    private String password;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinTable(name = "t_doctor_role", joinColumns = {@JoinColumn(name = "doctor_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")})
-
-    private Set<Role> roles = new HashSet<>();
+    private String nameDoctor;
 
     private int age;
 
