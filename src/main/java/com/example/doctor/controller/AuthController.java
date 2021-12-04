@@ -35,6 +35,7 @@ public class AuthController {
     public Account register(@RequestBody Account account){
         account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
         return accountService.createAccount(account);
+     //hien day
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Account account){
