@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khoa</title>
+    <link rel="stylesheet" th:href="@{/css/Home_Khoa.css}" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+</head>
+<body>
+    <div class="background">
+        <div class="form">
+            <div class="title">
+                <p>Thêm/Sửa Khoa</p>
+            </div>
+            <div class="ma">
+                <label for="" class="ma_lable">Mã Khoa</label>
+                <input type="text" />
+            </div>
+            <div class="ten">
+                <label for="" class="ten_lable">Tên Khoa</label>
+                <input type="text" />
+            </div>
+            <div class="btn">
+                <button class="them">Thêm</button>
+                <button class="sua">Sửa</button>
+            </div>
+        </div>
+        <div class="search">
+            <input type="text" placeholder="Tìm Kiếm" />
+            <button><i class="fas fa-search"></i>Tìm</button>
+        </div>
+        <div class="return">
+            <a href=""><i class="fas fa-undo-alt"></i>Quay về</a>
+        </div>
+        <h3>Thông Tin Các Khoa</h3>
+      <table>
+        <thead>
+          <th>Số thứ tự</th>
+          <th>Mã khoa</th>
+          <th>Tên Khoa</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>RHM</td>
+            <td>Khoa Răng Hàm Mặt</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    
+    <div class="blur"></div>
+</body>
+</html>
