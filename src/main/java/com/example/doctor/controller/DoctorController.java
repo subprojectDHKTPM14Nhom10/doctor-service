@@ -12,7 +12,7 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    @PostMapping("/")
+    @PostMapping
     public Doctor saveDoctor(@RequestBody Doctor doctor){
         return doctorService.createUser(doctor);
     }
