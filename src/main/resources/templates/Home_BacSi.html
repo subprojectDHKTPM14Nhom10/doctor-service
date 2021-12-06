@@ -1,79 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bác Sĩ</title>
-    <link rel="stylesheet" th:href="@{/css/Home_BacSi.css}" />
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
-  </head>
-  <body>
-    <div class="background">
-      <div class="form">
-        <div class="title">
-          <p>Thêm/Sửa Bác Sĩ</p>
-        </div>
-        <div class="ma">
-          <label for="" class="ma_lable">Mã</label>
-          <input type="text" />
-        </div>
-        <div class="ten">
-          <label for="" class="ten_lable">Tên</label>
-          <input type="text" />
-        </div>
-        <div class="tuoi">
-          <label for="" class="tuoi_lable">Tuổi</label>
-          <input type="number" />
-        </div>
-        <div class="email">
-          <label for="" class="email_lable">Email</label>
-          <input type="email" />
-        </div>
-        <div class="sdt">
-          <label for="" class="sdt_lable">Số điện thoại</label>
-          <input type="number" />
-        </div>
-        <div class="makhoa">
-          <label for="" class="makhoa_lable">Mã Khoa</label>
-          <input type="text" />
-        </div>
-        <div class="btn">
-          <button class="them">Thêm</button>
-          <button class="sua">Sửa</button>
-        </div>
-      </div>
-      <div class="search">
-        <input type="text" placeholder="Tìm Kiếm" />
-        <button><i class="fas fa-search"></i>Tìm</button>
-      </div>
-      <div class="khoa">
-          <a href=""><i class="fas fa-arrow-right"></i>Quản Lí Khoa</a>
-      </div>
-      <h3>Thông Tin Bác Sĩ</h3>
-      <table>
-        <thead>
-          <th>Số thứ tự</th>
-          <th>Mã bác sĩ</th>
-          <th>Tên bác sĩ</th>
-          <th>Tuổi</th>
-          <th>Email</th>
-          <th>Số điện thoại</th>
-          <th>Mã Khoa</th>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>BS01</td>
-            <td>Đỗ Đạt Đức</td>
-            <td>21</td>
-            <td>duc@gmail.com</td>
-            <td>0359806602</td>
-            <td>1</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="blur"></div>
-  </body>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bác Sĩ</title>
+  <link rel="stylesheet" th:href="@{/css/Home_BacSi.css}" />
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+</head>
+<body>
+<div class="background">
+
+  <div class="search">
+    <input type="text" placeholder="Tìm Kiếm" />
+    <button><i class="fas fa-search"></i>Tìm</button>
+  </div>
+
+  <div class="khoa_add">
+    <button><a th:href="@{/showFormForAdd}">Thêm Bác Sĩ</a> </button>
+    <a th:href="@{/GiaoDien_Khoa}"><i class="fas fa-arrow-right"></i>Quản Lí Khoa</a>
+  </div>
+
+  <h3>Thông Tin Bác Sĩ</h3>
+  <table>
+    <thead>
+    <th>Mã bác sĩ</th>
+    <th>Tên bác sĩ</th>
+    <th>Tuổi</th>
+    <th>Email</th>
+    <th>Số điện thoại</th>
+    <th>Mã Khoa</th>
+    <th>Action</th>
+    </thead>
+    <tbody>
+    <tr th:each="temp : ${listVO}">
+      <td th:text="${temp.doctor.id}" />
+      <td th:text="${temp.doctor.nameDoctor}" />
+      <td th:text="${temp.doctor.age}" />
+      <td th:text="${temp.doctor.email}" />
+      <td th:text="${temp.doctor.phone}" />
+      <td th:text="${temp.department.departmentName}" />
+      <td>
+        <button class="update">
+          <a th:href="@{/showFormForUpdate(doctorId=${temp.doctor.id})}">Sửa</a>
+        </button>
+        <button class="delete">
+          <a th:href="@{/delete(doctorId=${temp.doctor.id})}"
+             onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false"
+          >Xóa</a>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="blur"></div>
+</body>
 </html>

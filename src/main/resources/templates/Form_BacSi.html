@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bác Sĩ</title>
+      <link rel="stylesheet" th:href="@{/css/Form_BacSi.css}" />
+      <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  </head>
+  <body>
+    <div class="background">
+        <form class="form" action="#" th:action="@{/save}"
+              th:object="${doctor}" method="POST">
+            <div class="title">
+            <p>Thêm/Sửa Bác Sĩ</p>
+            </div>
+<!--            <div class="ma">-->
+<!--                <label for="" class="ma_lable">Mã</label>-->
+<!--                <input type="text" />-->
+<!--            </div>-->
+            <input type="hidden" th:field="*{id}" />
+            <div class="ten">
+                <label for="" class="ten_lable">Tên</label>
+                <input type="text" th:field="*{nameDoctor}"/>
+            </div>
+            <div class="tuoi">
+                <label for="" class="tuoi_lable">Tuổi</label>
+                <input type="number" th:field="*{age}"/>
+            </div>
+            <div class="email">
+                <label for="" class="email_lable">Email</label>
+                <input type="email" th:field="*{email}"/>
+            </div>
+            <div class="sdt">
+                <label for="" class="sdt_lable">Số điện thoại</label>
+                <input type="number" th:field="*{phone}"/>
+            </div>
+            <div class="makhoa">
+                <label for="" class="makhoa_lable">Mã Khoa</label>
+                <input type="text" th:field="*{departmentId}"/>
+            </div>
+            <div class="btn">
+                <button class="them" type="submit">Lưu</button>
+<!--                <button class="sua">Sửa</button>-->
+            </div>
+        </form>
+      
+
+        <div class="khoa">
+            <a th:href="@{/save}"><i class="fas fa-arrow-right"></i>Quay lại</a>
+        </div>
+    </div>
+    <div class="blur"></div>
+  </body>
+</html>

@@ -2,6 +2,7 @@ package com.example.doctor.controller;
 
 
 import com.example.doctor.Util.JwtUtil;
+import com.example.doctor.VO.ResponseTemplateVO;
 import com.example.doctor.authen.UserPrincipal;
 import com.example.doctor.entity.Account;
 import com.example.doctor.entity.Doctor;
@@ -10,13 +11,20 @@ import com.example.doctor.service.AccountService;
 import com.example.doctor.service.DoctorService;
 import com.example.doctor.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@RestController
+import javax.print.Doc;
+import javax.print.attribute.standard.PresentationDirection;
+import java.util.List;
+
+
 @Controller
 public class AuthController {
     @Autowired
@@ -33,27 +41,37 @@ public class AuthController {
 
     @RequestMapping("/")
     public String welcome(){
-        return "index";
+        return "DangNhap";
     }
 
-    @PostMapping("/register")
-    @ResponseBody
-    public Account register(@RequestBody Account account){
-        account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
-        return accountService.createAccount(account);
-     //hien day
+    @GetMapping("/register")
+    public String create(Model model){
+        model.addAttribute("account", new Account());
+        return "/Dangki";
     }
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Account account){
+
+
+
+    @RequestMapping(value = "/account", method = RequestMethod.POST)
+    public String register(Model model, @ModelAttribute Account account, RedirectAttributes redirect){
+        account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
+        Account acc = accountService.createAccount(account);
+        redirect.addFlashAttribute("success", "Register account successfully!");
+        return "redirect:/";
+    }
+
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(@ModelAttribute Account account){
 
         UserPrincipal userPrincipal =
                 accountService.findByUsername(account.getUsername());
 
+
         if (null == account || !new BCryptPasswordEncoder()
                 .matches(account.getPassword(), userPrincipal.getPassword())) {
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Account or password is not valid!");
+            return "/DangNhap";
         }
 
         Token token = new Token();
@@ -62,7 +80,52 @@ public class AuthController {
         token.setTokenExpDate(jwtUtil.generateExpirationDate());
         token.setCreatedBy(userPrincipal.getUserId());
         tokenService.createToken(token);
+        ResponseEntity.ok(token.getToken());
 
-        return ResponseEntity.ok(token.getToken());
+        return "redirect:/alldoctor";
     }
+
+
+    @RequestMapping(value = "/alldoctor", method = RequestMethod.GET)
+    public String getAllInvoices(Model model){
+        model.addAttribute("account", new Account());
+        List<ResponseTemplateVO> list = doctorService.getAllDoctorWithDepartment();
+        model.addAttribute("listVO", list);
+        return "/Home_BacSi";
+    }
+
+    @GetMapping(value = "/showFormForAdd")
+    public String showFormForAdd(Model model){
+        Doctor doctor = new Doctor();
+        model.addAttribute("doctor", doctor);
+        return "/Form_BacSi";
+    }
+
+    @PostMapping("/save")
+    public String saveDoctor(@ModelAttribute("doctor") Doctor doctor){
+        doctorService.createUser(doctor);
+        return "redirect:/alldoctor";
+    }
+
+//    @GetMapping(value = "/showFormForUpdate")
+//    public String showFormForUpdate(@RequestParam("doctorId") Long id, Model model){
+//        ResponseTemplateVO vo = doctorService.getDepartmentWithDoctor(id);
+//        model.addAttribute("doctor", vo);
+//        return "/Form_BacSi";
+//    }
+
+    @GetMapping("/showFormForUpdate")
+    public String updateDoctor(@RequestParam("doctorId") Long id, Model model) {
+        Doctor doctor = doctorService.findDoctorById(id);
+        model.addAttribute("doctor", doctor);
+        return "/Form_BacSi";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam("doctorId") Long id){
+        doctorService.deleteDoctor(id);
+        return "redirect:/alldoctor";
+    }
+
+
 }

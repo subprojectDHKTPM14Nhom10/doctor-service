@@ -2,6 +2,8 @@ package com.example.doctor.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,6 +15,7 @@ import java.util.Set;
 @Setter
 public class Doctor extends BaseEntity {
 
+    @Column(columnDefinition = "nvarchar(255)")
     private String nameDoctor;
 
     private int age;
@@ -23,4 +26,14 @@ public class Doctor extends BaseEntity {
 
     private Long departmentId;
 
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "nameDoctor='" + nameDoctor + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", departmentId=" + departmentId +
+                '}';
+    }
 }

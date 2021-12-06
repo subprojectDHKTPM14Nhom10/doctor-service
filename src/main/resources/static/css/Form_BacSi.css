@@ -1,0 +1,303 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+.blur {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .7);
+}
+
+.background {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	background-image: url(../images/bgr_bacsi.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+.background .form {
+	position: relative;
+	z-index: 1;
+	width: 30%;
+	height: 350px;
+	padding: 15px 20px;
+	border: 1px solid white;
+	background-color: rgba(255, 255, 255, .2);
+}
+
+.background .form .title {
+	font-size: 20px;
+	width: 100%;
+	height: 5%;
+	text-align: center;
+	color: white;
+}
+
+.background .form .ma {
+	display: flex;
+	width: 100%;
+	height: 8%;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	align-items: center;
+	justify-content: first baseline;
+}
+
+.background .form .ma .ma_lable {
+	width: 30%;
+	height: 100%;
+	color: white;
+}
+
+.background .form .ma input {
+	width: 50%;
+	height: 100%;
+	color: white;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.background .form .ten {
+	display: flex;
+	width: 100%;
+	height: 8%;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	align-items: center;
+	justify-content: first baseline;
+}
+
+.background .form .ten .ten_lable {
+	width: 30%;
+	height: 100%;
+	color: white;
+}
+
+.background .form .ten input {
+	width: 50%;
+	height: 100%;
+	color: white;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.background .form .tuoi {
+	display: flex;
+	width: 100%;
+	height: 8%;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	align-items: center;
+	justify-content: first baseline;
+}
+
+.background .form .tuoi .tuoi_lable {
+	width: 30%;
+	height: 100%;
+	color: white;
+}
+
+.background .form .tuoi input {
+	width: 50%;
+	height: 100%;
+	color: white;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.background .form .email {
+	display: flex;
+	width: 100%;
+	height: 8%;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	align-items: center;
+	justify-content: first baseline;
+}
+
+.background .form .email .email_lable {
+	width: 30%;
+	height: 100%;
+	color: white;
+}
+
+.background .form .email input {
+	width: 50%;
+	height: 100%;
+	color: white;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.background .form .sdt {
+	display: flex;
+	width: 100%;
+	height: 8%;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	align-items: center;
+	justify-content: first baseline;
+}
+
+.background .form .sdt .sdt_lable {
+	width: 30%;
+	height: 100%;
+	color: white;
+}
+
+.background .form .sdt input {
+	width: 50%;
+	height: 100%;
+	color: white;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.background .form .makhoa {
+	display: flex;
+	width: 100%;
+	height: 8%;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	align-items: center;
+	justify-content: first baseline;
+}
+
+.background .form .makhoa .makhoa_lable {
+	width: 30%;
+	height: 100%;
+	color: white;
+}
+
+.background .form .makhoa input {
+	width: 50%;
+	height: 100%;
+	color: white;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.background .form .btn {
+	display: flex;
+	width: 50%;
+	height: 10%;
+	margin: 0 auto;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.background .form .btn .them {
+	width: 50%;
+	height: 100%;
+	border-radius: 5px;
+	background-color: #15e8f7;
+}
+
+.background .form .btn .sua {
+	width: 50%;
+	height: 100%;
+	border-radius: 5px;
+	background-color: #0cf56d;
+}
+
+.background .search {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 50%;
+}
+
+.background .search input {
+	width: 200px;
+	height: 30px;
+	background-color: white;
+}
+
+.background .search button {
+	width: 70px;
+	height: 30px;
+	border-radius: 5px;
+	background-color: #15e8f7;
+}
+
+.background .khoa {
+	position: absolute;
+	z-index: 1;
+	top: 5%;
+	right: 10%;
+}
+
+.background .khoa a {
+	padding: 10px;
+	text-decoration: none;
+	color: white;
+	border: 1px solid white;
+	background-color: rgba(0, 0, 0, .2);
+}
+
+.background .khoa a i {
+	margin-right: 10px;
+}
+
+.background .khoa:hover a {
+	color: black;
+	border: 1px solid black;
+	background-color: white;
+}
+
+.background h3 {
+	font-size: 30px;
+	position: relative;
+	z-index: 1;
+	text-align: center;
+	color: white;
+}
+
+.background table {
+	position: relative;
+	z-index: 1;
+	width: 80%;
+	margin: 0 auto;
+	border-collapse: collapse;
+	border: 1px solid white;
+	background-color: rgba(255, 255, 255, .2);
+}
+
+.background table thead th {
+	color: white;
+	border: 1px solid white;
+}
+
+.background table tbody tr {
+	border: 1px solid white;
+}
+
+.background table tbody tr td {
+	height: 40px;
+	color: white;
+	border: 1px solid white;
+}
+
+.background table tbody tr :last-child {
+	display: flex;
+	padding: 5px;
+	align-items: center;
+	justify-content: center;
+}
+
+.background table tbody tr :last-child .update {
+	width: 50%;
+	height: 100%;
+	border-radius: 5px;
+	background-color: yellow;
+}
+
+.background table tbody tr :last-child .delete {
+	width: 50%;
+	height: 100%;
+	border-radius: 5px;
+	background-color: yellowgreen;
+}
+
