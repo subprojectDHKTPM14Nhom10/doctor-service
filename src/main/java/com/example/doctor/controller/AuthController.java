@@ -14,12 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-//@RestController
+@RestController
 @Controller
 public class AuthController {
     @Autowired
@@ -40,6 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @ResponseBody
     public Account register(@RequestBody Account account){
         account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
         return accountService.createAccount(account);
