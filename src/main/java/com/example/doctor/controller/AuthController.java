@@ -1,7 +1,7 @@
 package com.example.doctor.controller;
 
 
-import com.example.doctor.Util.JwtUtil;
+import com.example.doctor.util.JwtUtil;
 import com.example.doctor.authen.UserPrincipal;
 import com.example.doctor.entity.Account;
 import com.example.doctor.entity.Doctor;

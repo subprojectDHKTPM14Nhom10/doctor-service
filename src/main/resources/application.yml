@@ -4,3 +4,13 @@ spring:
   cloud:
     config:
       uri: http://localhost:8888
+  redis:
+    host: localhost
+    password:
+    port: 6379
+    lettuce:
+      shutdown-timeout: 30000
+      pool:
+        max-active: 30
+        max-idle: 8
+        min-idle: 0

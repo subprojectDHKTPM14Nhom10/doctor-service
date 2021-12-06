@@ -1,4 +1,4 @@
-package com.example.doctor.Util;
+package com.example.doctor.util;
 import com.example.doctor.authen.UserPrincipal;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;

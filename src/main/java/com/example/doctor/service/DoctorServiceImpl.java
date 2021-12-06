@@ -5,6 +5,8 @@ import com.example.doctor.authen.UserPrincipal;
 import com.example.doctor.entity.Doctor;
 import com.example.doctor.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,6 +20,14 @@ public class DoctorServiceImpl implements DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    private HashOperations hashOperations;
+
+    private RedisTemplate redisTemplate;
+
+    public DoctorServiceImpl(RedisTemplate redisTemplate) {
+        this.hashOperations = redisTemplate.opsForHash();
+        this.redisTemplate = redisTemplate;
+    }
     @Override
     public Doctor createUser(Doctor doctor) {
         return doctorRepository.saveAndFlush(doctor);
