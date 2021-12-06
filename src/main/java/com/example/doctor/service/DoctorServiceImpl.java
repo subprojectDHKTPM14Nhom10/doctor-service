@@ -4,6 +4,8 @@ import com.example.doctor.VO.ResponseTemplateVO;
 import com.example.doctor.authen.UserPrincipal;
 import com.example.doctor.entity.Doctor;
 import com.example.doctor.repository.DoctorRepository;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -29,11 +31,13 @@ public class DoctorServiceImpl implements DoctorService {
         this.redisTemplate = redisTemplate;
     }
     @Override
+    @RateLimiter(name="basicExample")
     public Doctor createUser(Doctor doctor) {
         return doctorRepository.saveAndFlush(doctor);
     }
 
     @Override
+    @Retry(name = "basic")
     public ResponseTemplateVO getDepartmentWithDoctor(Long userId) {
         ResponseTemplateVO vo = new ResponseTemplateVO();
         Doctor user = doctorRepository.findById(userId).get();
