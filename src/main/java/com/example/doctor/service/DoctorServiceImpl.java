@@ -73,6 +73,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    @Retry(name = "basic")
     public List<ResponseTemplateVO> getAllDoctorWithDepartment() {
         if(setOperations.members("EMPLOYEE_SET").size() > 0){
             return Arrays.asList((ResponseTemplateVO[]) setOperations.members("EMPLOYEE_SET").toArray());
@@ -92,10 +93,8 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    @Retry(name = "basic")
     public Doctor findDoctorById(Long Id) {
-//        if(hashOperations.get("DOCTOR", Id)!=null){
-//            return hashOperations.get("DOCTOR", Id);
-//        }
         return doctorRepository.findById(Id).get();
     }
     public Doctor updateDoctor(Doctor inv, Long Id) {
@@ -119,6 +118,7 @@ public class DoctorServiceImpl implements DoctorService {
         doctorRepository.delete(doctor);
     }
     @Override
+    @Retry(name = "basic")
     public List<Object> getAllDepartment() {
 //        if(hashOperations.values("DEPARTMENT").size()>0){
 //            return hashOperations.values("DEPARTMENT");
@@ -146,6 +146,7 @@ public class DoctorServiceImpl implements DoctorService {
         return d;
     }
     @Override
+    @Retry(name = "basic")
     public Department findDepartmentById(Long id) {
         Department department =
                 restTemplate.getForObject("http://localhost:9001/department/" + id, Department.class);
@@ -153,7 +154,6 @@ public class DoctorServiceImpl implements DoctorService {
     }
     @Override
     public void deleteDepartment(Long id) {
-
                 restTemplate.delete("http://localhost:9001/department/delete/" + id);
     }
 }
