@@ -43,6 +43,7 @@ public class DoctorServiceImpl implements DoctorService {
         Doctor user = doctorRepository.findById(userId).get();
         vo.setDoctor(user);
         Department order =restTemplate.getForObject("http://localhost:9001/department/"+user.getDepartmentId(),Department.class);
+        Department order2 =restTemplate.
         vo.setDepartment(order);
         return vo;
     }
