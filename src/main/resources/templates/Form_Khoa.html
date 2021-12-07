@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khoa</title>
+    <link rel="stylesheet" th:href="@{/css/Form_Khoa.css}" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+</head>
+<body>
+<div class="background">
+    <form class="form" action="#" th:action="@{/saveDepartment}"
+          th:object="${department}" method="POST">
+        <div class="title">
+            <p>Thêm/Sửa Khoa</p>
+        </div>
+        <input type="hidden" th:field="*{id}" />
+        <div class="ten">
+            <label for="" class="ten_lable">Tên</label>
+            <input type="text" th:field="*{departmentName}"/>
+        </div>
+
+        <div class="btn">
+            <button type="submit" class="them">Lưu</button>
+        </div>
+    </form>
+
+    <div class="khoa">
+        <a th:href="@{/allkhoa}"><i class="fas fa-arrow-right"></i>Quay lại</a>
+    </div>
+</div>
+<div class="blur"></div>
+</body>
+</html>

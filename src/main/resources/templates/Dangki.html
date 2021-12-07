@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Kí</title>
+    <link rel="stylesheet" th:href="@{/css/Dangki.css}" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background">
+        <div class="container">
+            <p class="title">Đăng Kí</p>
+            <form method="post" th:action="@{/account}" th:object="${account}">
+                <div class="nameandpass">
+                    <div class="username">
+                        <input type="text" placeholder="Username" th:field="*{username}">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="password">
+                        <input type="text" placeholder="Password" th:field="*{password}">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+                <div class="btn">
+                    <button type="submit" class="dangnhap">Đăng Kí</button>
+                </div>
+            </form>
+            <div class="bottom">
+                <p>Đã có tài khoản?
+                    <a th:href="@{/}">Click để đăng nhập!</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="blur"></div>
+</body>
+</html>

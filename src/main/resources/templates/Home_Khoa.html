@@ -10,42 +10,35 @@
 </head>
 <body>
     <div class="background">
-        <div class="form">
-            <div class="title">
-                <p>Thêm/Sửa Khoa</p>
-            </div>
-            <div class="ma">
-                <label for="" class="ma_lable">Mã Khoa</label>
-                <input type="text" />
-            </div>
-            <div class="ten">
-                <label for="" class="ten_lable">Tên Khoa</label>
-                <input type="text" />
-            </div>
-            <div class="btn">
-                <button class="them">Thêm</button>
-                <button class="sua">Sửa</button>
-            </div>
-        </div>
         <div class="search">
             <input type="text" placeholder="Tìm Kiếm" />
             <button><i class="fas fa-search"></i>Tìm</button>
         </div>
         <div class="return">
-            <a href=""><i class="fas fa-undo-alt"></i>Quay về</a>
+            <button><a th:href="@{/showFormForAddDepartment}">Thêm Khoa</a></button>
+            <a th:href="@{/alldoctor}"><i class="fas fa-undo-alt"></i>Quay về</a>
         </div>
         <h3>Thông Tin Các Khoa</h3>
       <table>
         <thead>
-          <th>Số thứ tự</th>
           <th>Mã khoa</th>
           <th>Tên Khoa</th>
+          <th>Action</th>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>RHM</td>
-            <td>Khoa Răng Hàm Mặt</td>
+          <tr th:each="temp : ${listKhoa}">
+              <td th:text="${temp.id}" />
+              <td th:text="${temp.departmentName}" />
+            <td>
+              <button class="update">
+                  <a th:href="@{/showFormForUpdateDepartment(departmentId=${temp.id})}">Sửa</a>
+              </button>
+              <button class="delete">
+                  <a th:href="@{/deleteDepartment(departmentId=${temp.id})}"
+                     onclick="if (!(confirm('Bạn có chắc chắn xóa Khoa này không?'))) return false">
+                      Xóa</a>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
