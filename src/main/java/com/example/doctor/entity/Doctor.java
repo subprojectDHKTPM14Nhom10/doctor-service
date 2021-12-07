@@ -6,6 +6,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +14,8 @@ import java.util.Set;
 @Table(name = "t_doctor")
 @Getter
 @Setter
-public class Doctor extends BaseEntity {
+public class Doctor extends BaseEntity implements Serializable {
+    private static final long serialVersionUID = -291484714475192602L;
 
     @Column(columnDefinition = "nvarchar(255)")
     private String nameDoctor;

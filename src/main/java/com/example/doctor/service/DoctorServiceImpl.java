@@ -1,26 +1,24 @@
 package com.example.doctor.service;
 import com.example.doctor.VO.Department;
 import com.example.doctor.VO.ResponseTemplateVO;
-import com.example.doctor.authen.UserPrincipal;
 import com.example.doctor.entity.Doctor;
 import com.example.doctor.repository.DoctorNotFoundException;
 import com.example.doctor.repository.DoctorRepository;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import javax.print.Doc;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -28,9 +26,17 @@ public class DoctorServiceImpl implements DoctorService {
     private RestTemplate restTemplate;
     @Autowired
     private DoctorRepository doctorRepository;
+    private SetOperations setOperations;
+    @Autowired
+    private RedisTemplate redisTemplate;
+    public DoctorServiceImpl(RedisTemplate redisTemplate) {
+        this.setOperations = redisTemplate.opsForSet();
+        this.redisTemplate = redisTemplate;
+    }
     @Override
     @RateLimiter(name="basicExample")
     public Doctor createUser(Doctor doctor) {
+        setOperations.add("DOCTOR", doctor);
         if(doctor.getId() != null){
             Doctor doc = doctorRepository.findById(doctor.getId()).get();
             doc.setId(doc.getId());
@@ -67,11 +73,11 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    @Cacheable(value="Doctor")
     public List<ResponseTemplateVO> getAllDoctorWithDepartment() {
-
+        if(setOperations.members("EMPLOYEE_SET").size() > 0){
+            return Arrays.asList((ResponseTemplateVO[]) setOperations.members("EMPLOYEE_SET").toArray());
+        }
         List<ResponseTemplateVO> voList = new ArrayList<ResponseTemplateVO>();
-
         List<Doctor> doctors = getAllDoctor();
         for (Doctor d : doctors) {
             ResponseTemplateVO vo = new ResponseTemplateVO();
@@ -79,19 +85,23 @@ public class DoctorServiceImpl implements DoctorService {
             vo.setDoctor(user);
             Department order =restTemplate.getForObject("http://localhost:9001/department/"+user.getDepartmentId(),Department.class);
             vo.setDepartment(order);
+            setOperations.add("DOCTOR", vo);
             voList.add(vo);
         }
         return voList;
     }
 
     @Override
-    @Cacheable(value="Doctor", key = "#Id")
     public Doctor findDoctorById(Long Id) {
+//        if(hashOperations.get("DOCTOR", Id)!=null){
+//            return hashOperations.get("DOCTOR", Id);
+//        }
         return doctorRepository.findById(Id).get();
     }
-
-    @CachePut(value="Doctor", key="#Id")
     public Doctor updateDoctor(Doctor inv, Long Id) {
+        //setOperations.put("DOCTOR", Id, inv);
+        ResponseTemplateVO vo = getDepartmentWithDoctor(Id);
+        setOperations.add("DOCTOR", vo);
         Doctor doctor = doctorRepository.findById(Id)
                 .orElseThrow(() -> new DoctorNotFoundException("Invoice Not Found"));
         doctor.setNameDoctor(inv.getNameDoctor());
@@ -101,17 +111,18 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setDepartmentId(inv.getDepartmentId());
         return doctorRepository.save(doctor);
     }
-
-    @CacheEvict(value="Doctor", key="#Id")
     public void deleteDoctor(Long Id) {
+        //hashOperations.delete("DOCTOR", Id);
+        setOperations.remove("DOCTOR", getDepartmentWithDoctor(Id));
         Doctor doctor = doctorRepository.findById(Id)
                 .orElseThrow(() -> new DoctorNotFoundException("Invoice Not Found"));
         doctorRepository.delete(doctor);
     }
-
     @Override
-    @Cacheable(value="Department")
     public List<Object> getAllDepartment() {
+//        if(hashOperations.values("DEPARTMENT").size()>0){
+//            return hashOperations.values("DEPARTMENT");
+//        }
         RestTemplate restTemplate = new RestTemplate();
         List<Object> list = new ArrayList<Object>();
         Object[] departments =
@@ -119,6 +130,10 @@ public class DoctorServiceImpl implements DoctorService {
 
         for (Object o : departments) {
             list.add(o);
+            //Object[] aa= (Object[]) o;
+            //Department de = new Department((Long) aa[0], (String) aa[1]);
+            //System.out.println(de +"2222");
+            //hashOperations.put("DEPARTMENT", aa[0], o);
         }
         return list;
     }
