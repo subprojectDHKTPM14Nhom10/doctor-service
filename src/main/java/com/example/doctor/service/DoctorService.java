@@ -1,5 +1,6 @@
 package com.example.doctor.service;
 
+import com.example.doctor.VO.Department;
 import com.example.doctor.VO.ResponseTemplateVO;
 import com.example.doctor.authen.UserPrincipal;
 import com.example.doctor.entity.Doctor;
@@ -15,4 +16,10 @@ public interface DoctorService {
     void deleteDoctor(Long id);
     List<ResponseTemplateVO> getAllDoctorWithDepartment();
     Doctor findDoctorById(Long id);
+
+
+    List<Object> getAllDepartment();
+    Department createDepartment(Department department);
+    Department findDepartmentById(Long id);
+    void deleteDepartment(Long id);
 }

@@ -2,6 +2,7 @@ package com.example.doctor.controller;
 
 
 import com.example.doctor.Util.JwtUtil;
+import com.example.doctor.VO.Department;
 import com.example.doctor.VO.ResponseTemplateVO;
 import com.example.doctor.authen.UserPrincipal;
 import com.example.doctor.entity.Account;
@@ -50,8 +51,6 @@ public class AuthController {
         return "/Dangki";
     }
 
-
-
     @RequestMapping(value = "/account", method = RequestMethod.POST)
     public String register(Model model, @ModelAttribute Account account, RedirectAttributes redirect){
         account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
@@ -60,20 +59,15 @@ public class AuthController {
         return "redirect:/";
     }
 
-
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String login(@ModelAttribute Account account){
-
         UserPrincipal userPrincipal =
                 accountService.findByUsername(account.getUsername());
 
-
         if (null == account || !new BCryptPasswordEncoder()
                 .matches(account.getPassword(), userPrincipal.getPassword())) {
-
             return "/DangNhap";
         }
-
         Token token = new Token();
         token.setToken(jwtUtil.generateToken(userPrincipal));
 
@@ -107,13 +101,6 @@ public class AuthController {
         return "redirect:/alldoctor";
     }
 
-//    @GetMapping(value = "/showFormForUpdate")
-//    public String showFormForUpdate(@RequestParam("doctorId") Long id, Model model){
-//        ResponseTemplateVO vo = doctorService.getDepartmentWithDoctor(id);
-//        model.addAttribute("doctor", vo);
-//        return "/Form_BacSi";
-//    }
-
     @GetMapping("/showFormForUpdate")
     public String updateDoctor(@RequestParam("doctorId") Long id, Model model) {
         Doctor doctor = doctorService.findDoctorById(id);
@@ -125,6 +112,39 @@ public class AuthController {
     public String delete(@RequestParam("doctorId") Long id){
         doctorService.deleteDoctor(id);
         return "redirect:/alldoctor";
+    }
+
+    @RequestMapping(value = "/allkhoa", method = RequestMethod.GET)
+    public String getAllDepartment(Model model){
+        List<Object> list = doctorService.getAllDepartment();
+        model.addAttribute("listKhoa", list);
+        return "/Home_Khoa";
+    }
+
+    @GetMapping(value = "/showFormForAddDepartment")
+    public String showFormForAddDepartment(Model model){
+        Department department = new Department();
+        model.addAttribute("department", department);
+        return "/Form_Khoa";
+    }
+
+    @PostMapping("/saveDepartment")
+    public String saveDepartment(@ModelAttribute("department") Department department){
+        doctorService.createDepartment(department);
+        return "redirect:/allkhoa";
+    }
+
+    @GetMapping("/showFormForUpdateDepartment")
+    public String updateDepartment(@RequestParam("departmentId") Long id, Model model) {
+        Department department = doctorService.findDepartmentById(id);
+        model.addAttribute("department", department);
+        return "/Form_Khoa";
+    }
+
+    @GetMapping("/deleteDepartment")
+    public String deleteDepartment(@RequestParam("departmentId") Long id){
+        doctorService.deleteDepartment(id);
+        return "redirect:/allkhoa";
     }
 
 

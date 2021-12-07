@@ -30,10 +30,8 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     @RateLimiter(name="basicExample")
     public Doctor createUser(Doctor doctor) {
-        Doctor doc = doctorRepository.findById(doctor.getId()).get();
-        System.out.println("123456" + doc);
-        if(doc.getId() != null){
-
+        if(doctor.getId() != null){
+            Doctor doc = doctorRepository.findById(doctor.getId()).get();
             doc.setId(doc.getId());
             doc.setNameDoctor(doctor.getNameDoctor());
             doc.setAge(doctor.getAge());
@@ -42,7 +40,15 @@ public class DoctorServiceImpl implements DoctorService {
             doc.setDepartmentId(doctor.getDepartmentId());
             return doctorRepository.save(doc);
         }
-        return doctorRepository.save(doctor);
+        else{
+            Doctor d = new Doctor();
+            d.setNameDoctor(doctor.getNameDoctor());
+            d.setAge(doctor.getAge());
+            d.setEmail(doctor.getEmail());
+            d.setPhone(doctor.getPhone());
+            d.setDepartmentId(doctor.getDepartmentId());
+            return doctorRepository.save(d);
+        }
     }
 
     @Override
@@ -80,13 +86,14 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public Doctor findDoctorById(Long id) {
-        return doctorRepository.findById(id).get();
+    @Cacheable(value="Doctor", key = "#Id")
+    public Doctor findDoctorById(Long Id) {
+        return doctorRepository.findById(Id).get();
     }
 
-    @CachePut(value="Doctor", key="#id")
-    public Doctor updateDoctor(Doctor inv, Long id) {
-        Doctor doctor = doctorRepository.findById(id)
+    @CachePut(value="Doctor", key="#Id")
+    public Doctor updateDoctor(Doctor inv, Long Id) {
+        Doctor doctor = doctorRepository.findById(Id)
                 .orElseThrow(() -> new DoctorNotFoundException("Invoice Not Found"));
         doctor.setNameDoctor(inv.getNameDoctor());
         doctor.setAge(inv.getAge());
@@ -96,10 +103,49 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorRepository.save(doctor);
     }
 
-    @CacheEvict(value="Doctor", key="#id")
-    public void deleteDoctor(Long id) {
-        Doctor doctor = doctorRepository.findById(id)
+    @CacheEvict(value="Doctor", key="#Id")
+    public void deleteDoctor(Long Id) {
+        Doctor doctor = doctorRepository.findById(Id)
                 .orElseThrow(() -> new DoctorNotFoundException("Invoice Not Found"));
         doctorRepository.delete(doctor);
+    }
+
+    @Override
+    @Cacheable(value="Department")
+    public List<Object> getAllDepartment() {
+        RestTemplate restTemplate = new RestTemplate();
+        List<Object> list = new ArrayList<Object>();
+        Object[] departments =
+                restTemplate.getForObject("http://localhost:9001/department/alldepartment", Object[].class);
+
+        for (Object o : departments) {
+            list.add(o);
+        }
+        return list;
+    }
+
+    @Override
+    @RateLimiter(name="basicExample")
+    public Department createDepartment(Department department) {
+
+        System.out.println("kkkkkkkkkkkkkk" + department);
+        Department d =
+                restTemplate.postForObject("http://localhost:9001/department/", department, Department.class);
+
+        return d;
+    }
+
+    @Override
+    public Department findDepartmentById(Long id) {
+
+        Department department =
+                restTemplate.getForObject("http://localhost:9001/department/" + id, Department.class);
+        return department;
+    }
+
+    @Override
+    public void deleteDepartment(Long id) {
+
+                restTemplate.delete("http://localhost:9001/department/delete/" + id);
     }
 }

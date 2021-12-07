@@ -60,12 +60,21 @@
 	border-radius: 5px;
 	background-color: chartreuse;
 }
+.background .return button a{
+	border: none;
+	background: none;
+	text-decoration: none;
+}
 
 .background .return button:hover {
 	border: 1px solid chocolate;
 	background-color: chocolate;
 }
-
+.background .return button a:hover {
+	border: none;
+	background: none;
+	text-decoration: none;
+}
 .background .return a {
 	padding: 10px;
 	text-decoration: none;
@@ -130,11 +139,21 @@
 	border-radius: 5px;
 	background-color: yellow;
 }
+.background table tbody tr :last-child .update a{
+	border: none;
+	background: none;
+	text-decoration: none;
+}
 
 .background table tbody tr :last-child .delete {
 	width: 50%;
 	height: 100%;
 	border-radius: 5px;
 	background-color: yellowgreen;
+}
+.background table tbody tr :last-child .delete a{
+	border: none;
+	background: none;
+	text-decoration: none;
 }
 
