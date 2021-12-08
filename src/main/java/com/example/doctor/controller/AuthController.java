@@ -22,6 +22,7 @@ import java.util.List;
 
 
 @Controller
+@RequestMapping("/")
 public class AuthController {
     @Autowired
     private DoctorService doctorService;
