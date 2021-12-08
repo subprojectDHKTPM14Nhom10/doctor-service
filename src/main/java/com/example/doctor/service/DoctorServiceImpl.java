@@ -7,36 +7,29 @@ import com.example.doctor.repository.DoctorRepository;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 @Service
 public class DoctorServiceImpl implements DoctorService {
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
     private DoctorRepository doctorRepository;
-    private SetOperations setOperations;
+    private HashOperations hashOperations;
     @Autowired
     private RedisTemplate redisTemplate;
     public DoctorServiceImpl(RedisTemplate redisTemplate) {
-        this.setOperations = redisTemplate.opsForSet();
+        this.hashOperations = redisTemplate.opsForHash();
         this.redisTemplate = redisTemplate;
     }
     @Override
     @RateLimiter(name="basicExample")
     public Doctor createUser(Doctor doctor) {
-        setOperations.add("DOCTOR", doctor);
         if(doctor.getId() != null){
             Doctor doc = doctorRepository.findById(doctor.getId()).get();
             doc.setId(doc.getId());
@@ -45,7 +38,10 @@ public class DoctorServiceImpl implements DoctorService {
             doc.setEmail(doctor.getEmail());
             doc.setPhone(doctor.getPhone());
             doc.setDepartmentId(doctor.getDepartmentId());
-            return doctorRepository.save(doc);
+            Doctor kq1 = doctorRepository.save(doc);
+            ResponseTemplateVO vo1 = getDepartmentWithDoctor(kq1.getId());
+            hashOperations.put("DOCTOR", vo1.getDoctor().getId(), vo1);
+            return kq1;
         }
         else{
             Doctor d = new Doctor();
@@ -54,10 +50,12 @@ public class DoctorServiceImpl implements DoctorService {
             d.setEmail(doctor.getEmail());
             d.setPhone(doctor.getPhone());
             d.setDepartmentId(doctor.getDepartmentId());
-            return doctorRepository.save(d);
+            Doctor kq2 = doctorRepository.save(d);
+            ResponseTemplateVO vo2 = getDepartmentWithDoctor(kq2.getId());
+            hashOperations.put("DOCTOR", vo2.getDoctor().getId(), vo2);
+            return kq2;
         }
     }
-
     @Override
     @Retry(name = "basic")
     public ResponseTemplateVO getDepartmentWithDoctor(Long userId) {
@@ -71,12 +69,11 @@ public class DoctorServiceImpl implements DoctorService {
     public List<Doctor> getAllDoctor() {
         return doctorRepository.findAll();
     }
-
     @Override
     @Retry(name = "basic")
     public List<ResponseTemplateVO> getAllDoctorWithDepartment() {
-        if(setOperations.members("EMPLOYEE_SET").size() > 0){
-            return Arrays.asList((ResponseTemplateVO[]) setOperations.members("EMPLOYEE_SET").toArray());
+        if(hashOperations.values("DOCTOR").size()>0){
+            return hashOperations.values("DOCTOR");
         }
         List<ResponseTemplateVO> voList = new ArrayList<ResponseTemplateVO>();
         List<Doctor> doctors = getAllDoctor();
@@ -86,21 +83,20 @@ public class DoctorServiceImpl implements DoctorService {
             vo.setDoctor(user);
             Department order =restTemplate.getForObject("http://localhost:9001/department/"+user.getDepartmentId(),Department.class);
             vo.setDepartment(order);
-            setOperations.add("DOCTOR", vo);
+            //setOperations.add("DOCTOR", vo);
+            hashOperations.put("DOCTOR", vo.getDoctor().getId(), vo);
             voList.add(vo);
         }
         return voList;
     }
-
     @Override
     @Retry(name = "basic")
     public Doctor findDoctorById(Long Id) {
         return doctorRepository.findById(Id).get();
     }
     public Doctor updateDoctor(Doctor inv, Long Id) {
-        //setOperations.put("DOCTOR", Id, inv);
         ResponseTemplateVO vo = getDepartmentWithDoctor(Id);
-        setOperations.add("DOCTOR", vo);
+        hashOperations.put("DOCTOR", vo.getDoctor().getId(), vo);
         Doctor doctor = doctorRepository.findById(Id)
                 .orElseThrow(() -> new DoctorNotFoundException("Invoice Not Found"));
         doctor.setNameDoctor(inv.getNameDoctor());
@@ -111,36 +107,26 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorRepository.save(doctor);
     }
     public void deleteDoctor(Long Id) {
-        //hashOperations.delete("DOCTOR", Id);
-        setOperations.remove("DOCTOR", getDepartmentWithDoctor(Id));
         Doctor doctor = doctorRepository.findById(Id)
                 .orElseThrow(() -> new DoctorNotFoundException("Invoice Not Found"));
+        hashOperations.delete("DOCTOR", Id);
         doctorRepository.delete(doctor);
     }
     @Override
     @Retry(name = "basic")
     public List<Object> getAllDepartment() {
-//        if(hashOperations.values("DEPARTMENT").size()>0){
-//            return hashOperations.values("DEPARTMENT");
-//        }
         RestTemplate restTemplate = new RestTemplate();
         List<Object> list = new ArrayList<Object>();
         Object[] departments =
                 restTemplate.getForObject("http://localhost:9001/department/alldepartment", Object[].class);
-
         for (Object o : departments) {
             list.add(o);
-            //Object[] aa= (Object[]) o;
-            //Department de = new Department((Long) aa[0], (String) aa[1]);
-            //System.out.println(de +"2222");
-            //hashOperations.put("DEPARTMENT", aa[0], o);
         }
         return list;
     }
     @Override
     @RateLimiter(name="basicExample")
     public Department createDepartment(Department department) {
-        System.out.println("kkkkkkkkkkkkkk" + department);
         Department d =
                 restTemplate.postForObject("http://localhost:9001/department/", department, Department.class);
         return d;
