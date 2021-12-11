@@ -72,7 +72,7 @@ public class AuthController {
         token.setCreatedBy(userPrincipal.getUserId());
         tokenService.createToken(token);
         ResponseEntity.ok(token.getToken());
-
+        System.out.println("Token dc sinh ra : "+token.getToken());
         return "redirect:/alldoctor";
     }
 
